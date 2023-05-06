@@ -29,13 +29,82 @@ myPromise
 // console.log("Hello!");
 // console.log(myPromise);
 
+// From Develhope
+// Promise chaining 
+function isLoggedIn(userId) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            let rand = Math.random();
+            if(rand > 0.3) {
+                resolve(userId);
+            } else{
+                reject(new Error("Not logged in!"));
+            }
+        }, 500);
+    })
+
+}
+
+function getUserDetails(userId) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if(userId < 5) {
+                resolve({"name": "Oxide", "otherData": "Buna ziua"});
+            } else {
+                reject(new Error("User does not exist!"));
+            }
+        }, 500)
+    })
+}
+
+function getUserName({name}) {
+    // throw new Error("some new error")
+    if(name === undefined) {
+        return Promise.reject(new Error("name was undefined"))
+    }
+    return Promise.resolve(name) 
+}
+isLoggedIn(3)
+    .then(getUserDetails)
+    .then(getUserName)
+    .then((name) => console.log(name))
+    .catch((err) => console.error(err))
+    // .finally(() => console.log("finally!"))
+
+// console.log(isLoggedIn(3))
 
 
+//------------------- Promise API ----------------------//
 
+// Promise.resolve()
+// Promise.reject()
+// ↑ Used to promisify a regular function. 
+//romise.all() - checking if all the promises are resolved, even though they are not chained
+Promise.all([
+    isLoggedIn(3),
+    getUserDetails(3),
+    getUserName({"name": "Greg"})
+])
+    .then((val) => console.log(val))
+    .catch((err) => console.error(err))
+// Compared to the classic way of checking promises, while that is in sequence, this one is in paralel, so it will run all the promises in paralel. Even though some of them may be resolved, if one is rejected it will throw the error. Also, it will still return the fulfiled ones.
 
+//Promise.race([
+//     isLoggedIn(3),
+//     getUserDetails(3),
+//     getUserName({"name": "Greg"})
+// ])
+//     .then((val) => console.log(val))
+//     .catch((err) => console.error(err))
+// ↑ it will return the promise that resolves the first
 
-
-
+// Promise.any([
+//     isLoggedIn(3),
+//     getUserDetails(3),
+//     getUserName({"name": "Greg"})
+// ])
+//     .then((val) => console.log(val))
+//     .catch((err) => console.error(err))
 
 
 //--------------------   EXERCISES   --------------------
@@ -53,7 +122,7 @@ const program = new Promise((resolve, reject) => {
 
 //---------------------------------------------------------
 
-console.log("Program started");
+// console.log("Program started");
 
 let program2 = new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -73,20 +142,20 @@ program2.then(() => {
 
 //---------------------------------------------------------
 
-console.log("Program started")
+// console.log("Program started")
 const program3 = new Promise((resolve, reject) => {
     setTimeout(() => {
         resolve()
     }, 3000)
 })
-console.log(program3);
-console.log("Program in progress...");
+// console.log(program3);
+// console.log("Program in progress...");
 program3.then(() => {
-    console.log("Step 1 complete");
+    // console.log("Step 1 complete");
     return "Step 2 complete"
     //↑ here I could also have writen a new promise just like the first and it would still work
 }).then((step2) => {
     setTimeout(() => {
-        console.log(step2)
+        // console.log(step2)
     }, 3000)
 })
