@@ -1,0 +1,11 @@
+:root {
+    --bg: #eeeeee;
+    --text: #111111;
+}
+body {
+    background-color: var(--bg);
+    color: var(--text)
+}
+li{
+    border: 1px solid var(--text);
+}
